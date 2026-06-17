@@ -1,6 +1,6 @@
 package net.engineeringdigest.journalApp.service;
 
-import net.engineeringdigest.journalApp.Entity.User;
+import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,21 +14,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+        if (user != null) {
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .roles(user.getRoles() == null || user.getRoles().isEmpty()
+                            ? new String[]{"USER"}
+                            : user.getRoles().toArray(new String[0]))
+                    .build();
         }
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRoles().toArray(new String[0]))
-                .build();
+        throw new UsernameNotFoundException("User not found with username: " + username);
     }
 }
 

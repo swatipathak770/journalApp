@@ -1,6 +1,6 @@
 package net.engineeringdigest.journalApp.service;
 
-import net.engineeringdigest.journalApp.Entity.User;
+import net.engineeringdigest.journalApp.entity.User;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;

@@ -1,6 +1,6 @@
 package net.engineeringdigest.journalApp.service;
 
-import net.engineeringdigest.journalApp.Entity.User;
+import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;

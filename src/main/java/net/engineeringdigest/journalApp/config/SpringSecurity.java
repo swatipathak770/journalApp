@@ -41,14 +41,31 @@ public class SpringSecurity {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+
+                        // Public APIs
                         .requestMatchers("/public/**").permitAll()
+
+                        // Google OAuth2
                         .requestMatchers("/auth/google/**").permitAll()
                         .requestMatchers("/login/oauth2/**").permitAll()
+
+                        // Swagger/OpenAPI
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        // Admin APIs
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // Protected APIs
                         .requestMatchers("/journal/**", "/users/**").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/users").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
@@ -56,7 +73,6 @@ public class SpringSecurity {
 
         return http.build();
     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

@@ -54,6 +54,10 @@ public class GoogleAuthController {
 
     @GetMapping("/auth/google/authorize")
     public ResponseEntity<Void> redirectToGoogle() {
+
+        log.info("GOOGLE REDIRECT URI = {}", redirectUri);
+        log.info("FRONTEND SUCCESS URI = {}", frontendSuccessUri);
+
         String googleAuthUrl = UriComponentsBuilder
                 .fromUriString("https://accounts.google.com/o/oauth2/v2/auth")
                 .queryParam("client_id", clientId)

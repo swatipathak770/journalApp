@@ -76,35 +76,85 @@ public class GoogleAuthController {
 
     @GetMapping({"/auth/google/callback", "/login/oauth2/code/google"})
     public ResponseEntity<?> handleGoogleCallback(@RequestParam String code) {
+
+        log.info("======================================");
+        log.info("GOOGLE CALLBACK REACHED");
+        log.info("Authorization code received");
+        log.info("Redirect URI being used: {}", redirectUri);
+        log.info("Frontend Success URI: {}", frontendSuccessUri);
+        log.info("======================================");
+
         try {
+
             String tokenEndpoint = "https://oauth2.googleapis.com/token";
+
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("code", code);
             params.add("client_id", clientId);
             params.add("client_secret", clientSecret);
             params.add("redirect_uri", redirectUri);
             params.add("grant_type", "authorization_code");
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-            ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenEndpoint, request, Map.class);
+
+            HttpEntity<MultiValueMap<String, String>> request =
+                    new HttpEntity<>(params, headers);
+
+            log.info("Requesting access token from Google...");
+
+            ResponseEntity<Map> tokenResponse =
+                    restTemplate.postForEntity(tokenEndpoint, request, Map.class);
+
+            log.info("Google token exchange successful");
+
             String idToken = (String) tokenResponse.getBody().get("id_token");
-            String userInfoUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + idToken;
-            ResponseEntity<Map> userInfoResponse = restTemplate.getForEntity(userInfoUrl, Map.class);
+
+            log.info("ID Token received");
+
+            String userInfoUrl =
+                    "https://oauth2.googleapis.com/tokeninfo?id_token=" + idToken;
+
+            ResponseEntity<Map> userInfoResponse =
+                    restTemplate.getForEntity(userInfoUrl, Map.class);
+
+            log.info("Google user info fetched");
+
             if (userInfoResponse.getStatusCode() == HttpStatus.OK) {
+
                 Map<String, Object> userInfo = userInfoResponse.getBody();
+
                 String email = (String) userInfo.get("email");
-                try{
+
+                log.info("Google Email: {}", email);
+
+                try {
+
                     userDetailsService.loadUserByUsername(email);
-                }catch (Exception e){
+
+                    log.info("Existing user found");
+
+                } catch (Exception e) {
+
+                    log.info("User not found. Creating new user...");
+
                     User user = new User();
                     user.setEmail(email);
                     user.setUsername(email);
-                    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+                    user.setPassword(
+                            passwordEncoder.encode(UUID.randomUUID().toString())
+                    );
                     user.setRoles(Arrays.asList("USER"));
+
                     userRepository.save(user);
+
+                    log.info("New user saved successfully");
                 }
+
                 String jwtToken = jwtUtil.generateToken(email);
+
+                log.info("JWT generated successfully");
+
                 String successUrl = UriComponentsBuilder
                         .fromUriString(frontendSuccessUri)
                         .queryParam("token", jwtToken)
@@ -112,16 +162,24 @@ public class GoogleAuthController {
                         .build()
                         .toUriString();
 
+                log.info("Redirecting to frontend:");
+                log.info(successUrl);
+
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .header(HttpHeaders.LOCATION, successUrl)
                         .build();
             }
+
+            log.error("Google user info request returned non-200 status");
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         } catch (Exception e) {
-            log.error("Exception occurred while handleGoogleCallback ", e);
+
+            log.error("Exception occurred while handleGoogleCallback", e);
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 }
 

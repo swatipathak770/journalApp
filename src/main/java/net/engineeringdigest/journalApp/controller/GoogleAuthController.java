@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import jakarta.annotation.PostConstruct;
 
 import java.util.*;
 
@@ -51,6 +52,13 @@ public class GoogleAuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+    @PostConstruct
+    public void test() {
+        log.info("================================");
+        log.info("GOOGLE URI : {}", redirectUri);
+        log.info("FRONTEND URI : {}", frontendSuccessUri);
+        log.info("================================");
+    }
 
     @GetMapping("/auth/google/authorize")
     public ResponseEntity<Void> redirectToGoogle() {

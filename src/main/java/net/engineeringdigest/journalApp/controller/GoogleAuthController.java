@@ -59,6 +59,10 @@ public class GoogleAuthController {
         log.info("FRONTEND URI : {}", frontendSuccessUri);
         log.info("================================");
     }
+    @GetMapping("/public/test-env")
+    public String testEnv() {
+        return redirectUri;
+    }
 
     @GetMapping("/auth/google/authorize")
     public ResponseEntity<Void> redirectToGoogle() {

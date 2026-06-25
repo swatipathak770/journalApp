@@ -32,10 +32,16 @@ public class GoogleAuthController {
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String clientSecret;
 
-    @Value("${app.google.redirect-uri:http://localhost:8080/journal/login/oauth2/code/google}")
+//    @Value("${app.google.redirect-uri:http://localhost:8080/journal/login/oauth2/code/google}")
+//    private String redirectUri;
+//
+//    @Value("${app.frontend.google-success-uri:http://localhost:5173/oauth/google/callback}")
+//    private String frontendSuccessUri;
+
+    @Value("${app.google.redirect-uri}")
     private String redirectUri;
 
-    @Value("${app.frontend.google-success-uri:http://localhost:5173/oauth/google/callback}")
+    @Value("${app.frontend.google-success-uri}")
     private String frontendSuccessUri;
 
     @Autowired

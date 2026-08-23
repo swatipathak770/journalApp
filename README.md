@@ -345,8 +345,10 @@ Through this project, I gained hands-on experience in:
 
 **Swati Pathak** 
 
-📧 Email: [pathakswati276.com]  
+📧 Email: pathakswati276@gmail.com
+
 🔗 GitHub: https://github.com/swatipathak770
+
 💼 LinkedIn: https://www.linkedin.com/in/swati-pathak-061218282/
 
 ## 🚀 Live Application

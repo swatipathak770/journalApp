@@ -10,6 +10,38 @@ The project follows a production-style architecture including secure authenticat
 - **Backend API**: https://journalapp-qq4d.onrender.com/journal (Render)
 - **API Documentation**: https://journalapp-qq4d.onrender.com/journal/swagger-ui.html
 
+## 📸 Application Preview
+
+### Home Page
+![Home Page](screenshots/home.png)
+
+Explore the application’s landing page and start a private journaling session.
+
+### Login & Authentication
+![Login & Authentication](screenshots/login.png)
+
+Sign in with account credentials or continue with Google authentication.
+
+### Journal Dashboard
+![Journal Dashboard](screenshots/dashboard.png)
+
+Browse, search, sort, and manage journal entries from a centralized dashboard.
+
+### Create Journal Entry
+![Create Journal Entry](screenshots/create-journal.png)
+
+Compose an entry with a title, mood, and tags.
+
+### User Profile & Statistics
+![User Profile & Statistics](screenshots/profile.png)
+
+Review account details and journal activity statistics in one place.
+
+### Dark Mode & Preferences
+![Dark Mode & Preferences](screenshots/settings.png)
+
+Switch the journal workspace theme from the settings page.
+
 ## 🚀 Key Features
 
 **Authentication & Security**
